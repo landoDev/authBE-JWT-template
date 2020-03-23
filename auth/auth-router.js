@@ -1,11 +1,12 @@
 const router = require("express").Router()
 const Users = require("../users/users-model.js")
 
-router.get("/register", (req, res) => {
+router.post("/register", (req, res) => {
   console.log('register endpoint')
+  
 })
 
-router.get("/login", (req, res) => {
+router.post("/login", (req, res) => {
   console.log('login endpoint')
 })
 
