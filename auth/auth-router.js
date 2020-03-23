@@ -9,8 +9,21 @@ router.post("/register", (req, res) => {
   // 2- make a hash using bcrypt
   //        - import the lib
   //        - use the lib
-  const hashedPassword = bc.hashSync()
+  //        - hashSync takes raw password and the number of rounds
+  const hashedPassword = bc.hashSync(password, 10) // 2 ^ 10
   // 3- we will save { username, password (hashed) } into db
+  Users.add({
+    username,
+    password: hashedPassword,
+  })
+    .then(data => {
+      console.log(data)
+      res.status(200).json(data)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ message: `Something went really poorly` })
+    })
   // 4- we can json back to the client whatever, res.end, res.send, res.json
 })
 
