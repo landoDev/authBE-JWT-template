@@ -28,7 +28,25 @@ router.post("/register", (req, res) => {
 })
 
 router.post("/login", (req, res) => {
-  console.log('login endpoint')
+  // 1- pull creds from requ
+  const { username, password } = req.body
+  // 2- check creds using bcrypc - we need the hash from the db
+  Users.findBy({ username }).first()
+    .then(user => {
+      if (user && bc.compareSync(password, user.password)) {
+        // this means the username exists in the db AND password good
+        // now we can save a session for this particular login
+      } else {
+        // this means the username does not exist
+        res.status(401).json({ message: 'Invalid credential' })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  // 3- create session by taking info to req.session
+  // THE END
+
 })
 
 router.get("/logout", (req, res) => {
