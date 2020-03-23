@@ -36,6 +36,9 @@ router.post("/login", (req, res) => {
       if (user && bc.compareSync(password, user.password)) {
         // this means the username exists in the db AND password good
         // now we can save a session for this particular login
+        req.session.user = user
+        // this response is setting Set-Cookie:sessionId=blablabla
+        res.json({ message: `Welcome, ${user.username}! Here is a cookie`})
       } else {
         // this means the username does not exist
         res.status(401).json({ message: 'Invalid credential' })
