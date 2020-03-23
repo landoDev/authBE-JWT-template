@@ -38,7 +38,7 @@ router.post("/login", (req, res) => {
         // now we can save a session for this particular login
         req.session.user = user
         // this response is setting Set-Cookie:sessionId=blablabla
-        res.json({ message: `Welcome, ${user.username}! Here is a cookie`})
+        res.json({ message: `Welcome, ${user.username}! Here is a cookie` })
       } else {
         // this means the username does not exist
         res.status(401).json({ message: 'Invalid credential' })
@@ -54,6 +54,15 @@ router.post("/login", (req, res) => {
 
 router.get("/logout", (req, res) => {
   console.log('logout endpoint')
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.json({ message: 'Sorry, you can not leave' })
+      } else {
+        res.json({ message: 'good bye' })
+      }
+    })
+  }
 })
 
 module.exports = router
